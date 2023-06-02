@@ -1,0 +1,2 @@
+beartype==0.14.0
+deepdiff==6.3.0
