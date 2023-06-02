@@ -19,10 +19,6 @@ class Is:
         return self.query == value
 
 
-class IsEnum(Is):
-    def match(self, value):
-        pass  # TODO
-
 
 class IsType(Is):
 

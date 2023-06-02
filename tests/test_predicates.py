@@ -5,6 +5,9 @@ from ..predicates import *
 from ..matcher import CheckOperator
 
 
+check = CheckOperator.match_item
+
+
 def numberlike(value):
     # string like num, int, decimal
 
@@ -15,79 +18,79 @@ def numberlike(value):
         return False
 
 
-def test_matchy_types():
+def test_match_types():
     assert IsType(str).match("arst")
     assert not IsType(str).match(123)
 
-    # assert CheckOperator.match_item('a', 'b')        # should we handle literals?
+    # assert check('a', 'b')        # should we handle literals?
 
-    assert CheckOperator.match_item('a', Is('a'))
-    assert CheckOperator.match_item('a', Is())
-    assert CheckOperator.match_item(None, Is())
-    assert not CheckOperator.match_item('b', Is('a'))
-    assert CheckOperator.match_item({'a', 'b'}, Is({'a', 'b'}))
+    assert check('a', Is('a'))
+    assert check('a', Is())
+    assert check(None, Is())
+    assert not check('b', Is('a'))
+    assert check({'a', 'b'}, Is({'a', 'b'}))
 
-    assert CheckOperator.match_item(None, IsType(Any))
-    assert CheckOperator.match_item({1, 2, 4}, IsType(Any))
+    assert check(None, IsType(Any))
+    assert check({1, 2, 4}, IsType(Any))
 
-    assert CheckOperator.match_item('a', IsType(str))
-    assert CheckOperator.match_item(888, IsType(int))
-    assert not CheckOperator.match_item(888, IsType(str))
+    assert check('a', IsType(str))
+    assert check(888, IsType(int))
+    assert not check(888, IsType(str))
 
     # with pytest.raises(Exception):
-    #     CheckOperator.match_item(888, MatchType("foo"))
+    #     check(888, MatchType("foo"))
 
-    assert CheckOperator.match_item(2, IsType(Optional[int]))
-    assert CheckOperator.match_item(None, IsType(Optional[int]))
+    assert check(2, IsType(Optional[int]))
+    assert check(None, IsType(Optional[int]))
 
     # if python >= 3.10, you can use simplified union syntax (PEP 604)
-    assert CheckOperator.match_item(2, IsType(str | int))
-    assert CheckOperator.match_item('word', IsType(str | int))
-    assert not CheckOperator.match_item(None, IsType(str | int))
+    assert check(2, IsType(str | int))
+    assert check('word', IsType(str | int))
+    assert not check(None, IsType(str | int))
 
     # this does not work because of old 2.x typeguard version (I think fixed in 3.0)
-    # assert not CheckOperator.match_item(None, MatchType(str | int))
+    # assert not check(None, MatchType(str | int))
 
 
-def test_matchy_type_like():
-    assert CheckOperator.match_item(2, IsTypeLike(float))
-    assert CheckOperator.match_item(2.12, IsTypeLike(float))
-    assert CheckOperator.match_item("2.5", IsTypeLike(float))
-    assert not CheckOperator.match_item("word", IsTypeLike(float))
+def test_match_type_like():
+    assert check(2, IsTypeLike(float))
+    assert check(2.12, IsTypeLike(float))
+    assert check("2.5", IsTypeLike(float))
+    assert not check("word", IsTypeLike(float))
 
     uid = uuid.uuid4()
 
-    assert CheckOperator.match_item(uid, IsTypeLike(uuid.UUID))
-    assert CheckOperator.match_item(str(uid), IsTypeLike(uuid.UUID))
-    assert not CheckOperator.match_item(123, IsTypeLike(uuid.UUID))
+    assert check(uid, IsTypeLike(uuid.UUID))
+    assert check(str(uid), IsTypeLike(uuid.UUID))
+    assert not check(123, IsTypeLike(uuid.UUID))
 
 
-def test_matchy_functions():
-    assert CheckOperator.match_item(3, IsEval(lambda x: 0 < x < 10))
-    assert not CheckOperator.match_item(34, IsEval(lambda x: 0 < x < 10))
+def test_match_functions():
+    assert check(3, IsEval(lambda x: 0 < x < 10))
+    assert not check(34, IsEval(lambda x: 0 < x < 10))
 
-    assert CheckOperator.match_item(3, IsEval(numberlike))
-    assert CheckOperator.match_item(3.52, IsEval(numberlike))
-    assert CheckOperator.match_item('-12.8', IsEval(numberlike))
-    assert not CheckOperator.match_item(None, IsEval(numberlike))
-    assert not CheckOperator.match_item("word", IsEval(numberlike))
+    assert check(3, IsEval(numberlike))
+    assert check(3.52, IsEval(numberlike))
+    assert check('-12.8', IsEval(numberlike))
+    assert not check(None, IsEval(numberlike))
+    assert not check("word", IsEval(numberlike))
 
 
 def test_match_multi_matcher():
-    assert CheckOperator.match_item(5, IsEval(
+    assert check(5, IsEval(
         lambda x: IsType(int).match(x)))
 
     # joining a match function with a match type
-    assert CheckOperator.match_item(7, IsEval(
+    assert check(7, IsEval(
         lambda x: IsType(int).match(x) and (1 < x < 10)))
 
-    assert not CheckOperator.match_item(7, IsEval(
+    assert not check(7, IsEval(
         lambda x: IsType(int).match(x) and (1 < x < 5)))
 
-    assert not CheckOperator.match_item(7, IsEval(
+    assert not check(7, IsEval(
         lambda x: IsType(str).match(x) and (1 < x < 10)))
 
 
-def test_matchy_eval():
-    assert CheckOperator.match_item(2, "~MM~ IsType(int)")
-    assert not CheckOperator.match_item(2, "~MM~IsType(str) ")
+def test_match_parsed():
+    assert check(2, "~MM~ IsType(int)")
+    assert not check(2, "~MM~IsType(str) ")

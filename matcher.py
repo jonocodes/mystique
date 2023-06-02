@@ -46,6 +46,8 @@ class Matcher:
         diff = DeepDiff(original, matcher, custom_operators=[CheckOperator()],
                         verbose_level=2)
 
+        # TODO: handle list_item_removed ?
+
         if self.sparse_dicts:
             diff.pop('dictionary_item_removed', None)
 
