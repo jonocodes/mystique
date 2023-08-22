@@ -1,8 +1,9 @@
+import json
 from dataclasses import dataclass
 from enum import auto, Enum
 
-from ..matcher import Matcher
-from ..predicates import *
+from ..src.matcher import Matcher
+from ..src.predicates import *
 
 
 class Color(Enum):
@@ -30,6 +31,19 @@ def test_objects():
     matcher = Car('Prius', 'V', IsType(str), IsType(Color))
 
     assert not Matcher().matches(data, matcher)
+
+
+def test_json_string():
+
+    # sometimes you may have an external json file perhaps where you cant inject python expressions into it for matching. So we interpret strings as matchers.
+
+    data = {'foo': 'baz', 'bar': [1, 3]}
+    
+    with open('tests/matcher1.json', 'r') as jf:
+        match_expression = json.load(jf)
+        print(match_expression)
+
+    assert Matcher().matches(data, match_expression)
 
 
 def test_deep():
@@ -78,3 +92,25 @@ def test_sparse_dicts():
     match_expression = [1, 2]
 
     assert not m.matches(data, match_expression)
+
+
+def test_examples():
+    # these can be copied into the readme
+
+    data = {'foo': 'baz', 'bar': [1, 3]}
+
+    # exact match
+    assert Matcher().matches(data, {'foo': 'baz', 'bar': [1, 3]})
+
+    # make sure one of the values just matches a type, instead of a value
+    assert Matcher().matches(data, {'foo': 'baz', 'bar': IsType(list[int])})
+
+    # perhaps you don't care about the type at all. just that there is a value
+    assert Matcher().matches(data, {'foo': 'baz', 'bar': Is()})
+
+    # check anything you want by writing your own logic
+    assert Matcher().matches(data, {'foo': 'baz', 'bar': IsEval(
+        lambda x: len(x) == 2)})
+
+    # if you dont care if a key is present or not, use 'sparse_dicts' settinvg
+    assert Matcher(sparse_dicts=True).matches(data, {'foo': 'baz'})

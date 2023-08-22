@@ -1,8 +1,8 @@
 import uuid
 from typing import Optional, Union
 
-from ..predicates import *
-from ..matcher import CheckOperator
+from ..src.predicates import *
+from ..src.matcher import CheckOperator
 
 
 check = CheckOperator.match_item
