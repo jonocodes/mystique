@@ -1,6 +1,6 @@
 [project]
 name = "mystique"
-version = "0.3.0"
+version = "0.3.1"
 authors = [
   { name="Jono Finger", email="jono@foodnotblogs.com" },
 ]

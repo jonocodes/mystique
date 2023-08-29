@@ -1,8 +1,8 @@
 import uuid
 from typing import Optional, Union
 
-from ..src.predicates import *
-from ..src.matcher import CheckOperator
+from mystique.predicates import *
+from mystique.matcher import CheckOperator
 
 
 check = CheckOperator.match_item

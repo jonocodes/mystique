@@ -2,8 +2,8 @@ import json
 from dataclasses import dataclass
 from enum import auto, Enum
 
-from ..src.matcher import Matcher
-from ..src.predicates import *
+from mystique.matcher import Matcher
+from mystique.predicates import *
 
 
 class Color(Enum):
