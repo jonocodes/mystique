@@ -6,6 +6,12 @@ A loose data matcher to help you write Python tests
 
 Imagine you need to fetch some data from a JSON API in a test. It returns a payload with 10 fields, but you only care about two of them. With Mystique you can be as rigerous or loose as you want when checking data equivalence. Check against any combination of dictionaries, lists, and objects.
 
+# Installation
+
+```bash
+pip install mystique 
+````
+
 # Examples
 
 ```python
