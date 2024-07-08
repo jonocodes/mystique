@@ -44,7 +44,7 @@ See tests/ for more examples.
 # Development
 
 ```bash
-pip install -r requirements.txt -r requirements_dev.txt
+make setup
 
-pytest
+make test
 ```
