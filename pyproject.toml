@@ -1,6 +1,6 @@
 [project]
 name = "mystique"
-version = "0.3.2"
+version = "0.4.0"
 authors = [
   { name="Jono Finger", email="jono@foodnotblogs.com" },
 ]
@@ -14,8 +14,8 @@ classifiers = [
 ]
 
 dependencies = [
-  "beartype==0.14.0",
-  "deepdiff==6.3.0",
+  "beartype==0.18.5",
+  "deepdiff==7.0.1",
 ]
 
 [project.urls]
