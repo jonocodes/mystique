@@ -46,11 +46,10 @@ See tests/ for more examples.
 
 - python >= 3.7
 - python >= 3.10 recommended
+- [just](https://github.com/casey/just)
 
 # Development
 
 ```bash
-make setup
-
-make test
+just setup test
 ```
